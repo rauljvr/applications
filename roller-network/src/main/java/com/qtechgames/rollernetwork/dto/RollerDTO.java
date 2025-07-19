@@ -21,6 +21,6 @@ public class RollerDTO {
 
     @NotNull
     @Size(min=1, max = 50)
-    private String referralName;
+    private String parentName;
 
 }

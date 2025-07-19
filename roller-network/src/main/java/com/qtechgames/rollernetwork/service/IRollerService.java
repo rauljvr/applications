@@ -4,15 +4,16 @@ import com.qtechgames.rollernetwork.dto.RollerDTO;
 import com.qtechgames.rollernetwork.model.RollerEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IRollerService {
 
-    public List<String> getRollerDownline(String name);
+    public List<String> getRollerDownline(final String name);
 
-    public RollerEntity createRoller(RollerDTO roller);
+    public RollerEntity createRoller(final RollerDTO roller);
 
-    public RollerEntity getRollerReferral(String name);
+    public RollerEntity getRollerReferral(final String name);
 
-    public void deleteRoller(String name);
+    public void deleteRoller(final String name);
+
+    public RollerEntity updateParentRoller(final String name, final RollerDTO roller);
 }

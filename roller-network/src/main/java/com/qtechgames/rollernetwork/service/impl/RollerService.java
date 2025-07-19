@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,8 +41,8 @@ public class RollerService implements IRollerService {
             throw new ResourceAlreadyExistsException("Roller already exists on the network: " + rollerDTO.getName());
         });
 
-        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getReferralName().toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Referral roller not found: " + rollerDTO.getReferralName()));
+        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getParentName().toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Referral roller not found: " + rollerDTO.getParentName()));
 
         RollerEntity rollerEntity = RollerEntity.builder()
                 .name(rollerDTO.getName().toUpperCase())
@@ -83,6 +82,20 @@ public class RollerService implements IRollerService {
         }
 
         rollerRepository.delete(parentRoller);
+    }
+
+    @Override
+    public RollerEntity updateParentRoller(final String name, final RollerDTO rollerDTO) {
+        RollerEntity roller = rollerRepository.findByName(name.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + name));
+
+        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getParentName().toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("New VIP host not found: " + rollerDTO.getParentName()));
+
+        roller.setName(rollerDTO.getName().toUpperCase());
+        roller.setParentId(referralRoller.getId());
+
+        return rollerRepository.save(roller);
     }
 
     private void downline(List<String> downlineList, RollerEntity roller) {

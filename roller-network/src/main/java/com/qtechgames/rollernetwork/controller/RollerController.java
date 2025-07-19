@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,5 +64,13 @@ public class RollerController {
         log.debug("Deleting Roller: {}", name);
 
         rollerService.deleteRoller(name);
+    }
+
+    @PutMapping("/roller/{name}")
+    public ResponseEntity<RollerEntity> updateParentRoller(@PathVariable(value = "name") @Size(max = 50) String name,
+                                                     @RequestBody @Valid RollerDTO roller) {
+        log.debug("Updating Roller: {}", name);
+
+        return ResponseEntity.ok().body(rollerService.updateParentRoller(name, roller));
     }
 }
