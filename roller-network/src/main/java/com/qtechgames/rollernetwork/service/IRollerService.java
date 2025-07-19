@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface IRollerService {
 
-    public List<String> getRollerDownline();
+    public List<String> getRollerDownline(String name);
 }

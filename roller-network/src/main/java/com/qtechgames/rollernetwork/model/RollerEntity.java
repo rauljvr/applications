@@ -30,7 +30,4 @@ public class RollerEntity {
 
     @Column(name = "parent_id", nullable = true)
     Long parentId;
-
-    @Column(nullable = false)
-    Long depth;
 }

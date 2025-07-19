@@ -27,10 +27,10 @@ public class RollerController {
         this.rollerService = rollerService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<String>> getRollerDownline() {
-        log.debug("Getting tree downline");
+    @GetMapping("/roller/{name}/downline")
+    public ResponseEntity<List<String>> getRollerDownline(@PathVariable(value = "name") @Size(max = 50) String name) {
+        log.debug("Getting downline of the Roller: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.getRollerDownline());
+        return ResponseEntity.ok().body(rollerService.getRollerDownline(name));
     }
 }

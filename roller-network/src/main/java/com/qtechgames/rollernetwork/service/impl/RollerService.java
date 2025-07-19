@@ -23,30 +23,25 @@ public class RollerService implements IRollerService {
     }
 
     @Override
-    public List<String> getRollerDownline() {
+    public List<String> getRollerDownline(final String name) {
+        List<String> downlineList = new ArrayList<>();
+        RollerEntity roller = rollerRepository.findByName(name.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Roller name not found: " + name));
 
-        List<String> downline = new ArrayList<>();
-        //List<RollerEntity> rollers = rollerRepository.findAllByOrderByDepthAsc();
-        List<RollerEntity> rollers = rollerRepository.findByDepthLessThan(2L);
+        downline(downlineList, roller);
 
-        if (rollers.isEmpty()) {
-            throw new ResourceNotFoundException("No Rollers found");
+        return downlineList;
+    }
+
+    private void downline(List<String> downlineList, RollerEntity roller) {
+        downlineList.add(roller.getName());
+        List<RollerEntity> children = rollerRepository.findByParentId(roller.getId());
+
+        if (children.isEmpty()) {
+            return;
         }
 
-        downline.add(rollers.get(0).getName());
-        rollers.stream()
-                .filter(roller -> !roller.getId().equals(0L))
-                .forEach(roller -> {
-                    downline.add(roller.getName());
-                    List<RollerEntity> children = rollerRepository.findByParentId(roller.getId());
-                    children.forEach(child -> {
-                        downline.add(child.getName());
-                        rollerRepository.findByParentId(child.getId())
-                                .forEach(leafNode -> downline.add(leafNode.getName()));
-                    });
-                });
-
-        return downline;
+        children.forEach(child -> downline(downlineList, child));
     }
 
 }
