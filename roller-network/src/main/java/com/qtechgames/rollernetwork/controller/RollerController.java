@@ -3,6 +3,7 @@ package com.qtechgames.rollernetwork.controller;
 import com.qtechgames.rollernetwork.dto.RollerDTO;
 import com.qtechgames.rollernetwork.model.RollerEntity;
 import com.qtechgames.rollernetwork.service.IRollerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(path = "/rollernetwork")
+@Tag(name = "Roller Management", description = "This Rest API provides the services to manage the online casino and its network of players.")
 public class RollerController {
 
     private IRollerService rollerService;
