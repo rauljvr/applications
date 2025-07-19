@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @Validated
 @RestController
@@ -25,10 +27,10 @@ public class RollerController {
         this.rollerService = rollerService;
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<RollerEntity> getRoller(@PathVariable(value = "name") String name) {
-        log.debug("Getting player's info: {}", name);
+    @GetMapping("/")
+    public ResponseEntity<List<String>> getRollerDownline() {
+        log.debug("Getting tree downline");
 
-        return ResponseEntity.ok().body(rollerService.getRoller(name).get());
+        return ResponseEntity.ok().body(rollerService.getRollerDownline());
     }
 }

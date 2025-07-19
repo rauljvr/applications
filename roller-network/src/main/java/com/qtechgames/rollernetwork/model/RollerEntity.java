@@ -27,4 +27,10 @@ public class RollerEntity {
 
     @Column(length = 50, nullable = false)
     String name;
+
+    @Column(name = "parent_id", nullable = true)
+    Long parentId;
+
+    @Column(nullable = false)
+    Long depth;
 }

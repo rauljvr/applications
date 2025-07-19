@@ -14,6 +14,12 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ErrorDetails> resourceNotFoundException(ResourceNotFoundException ex) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
+		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+
 	@ExceptionHandler(GenericException.class)
 	public ResponseEntity<ErrorDetails> genericException(GenericException ex) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());

@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface RollerRepository extends JpaRepository<RollerEntity, Long> {
 
     public Optional<RollerEntity> findByName(String name);
+
+    public List<RollerEntity> findByDepthLessThan(Long depth);
+
+    public List<RollerEntity> findByParentId(Long parent);
 }
