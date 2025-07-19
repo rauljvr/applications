@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -51,6 +52,37 @@ public class RollerService implements IRollerService {
                 .build();
 
         return rollerRepository.save(rollerEntity);
+    }
+
+    @Override
+    public RollerEntity getRollerReferral(final String rollerName) {
+        RollerEntity roller = rollerRepository.findByName(rollerName.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + rollerName));
+
+        if (Objects.isNull(roller.getReferralId())) {
+            throw new ResourceNotFoundException("The referral roller of " + rollerName + " already left the network.");
+        }
+
+        return rollerRepository.findById(roller.getReferralId())
+                .orElseThrow(() -> new ResourceNotFoundException("Referral Roller not found: " + roller.getReferralId()));
+    }
+
+    @Override
+    public void deleteRoller(final String name) {
+        RollerEntity parentRoller = rollerRepository.findByName(name.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + name));
+
+        List<RollerEntity> children = rollerRepository.findByParentId(parentRoller.getId());
+
+        if (!children.isEmpty()) {
+            children.forEach(child -> {
+                child.setParentId(parentRoller.getParentId());
+                child.setReferralId(null);
+                rollerRepository.save(child);
+            });
+        }
+
+        rollerRepository.delete(parentRoller);
     }
 
     private void downline(List<String> downlineList, RollerEntity roller) {

@@ -11,4 +11,8 @@ public interface IRollerService {
     public List<String> getRollerDownline(String name);
 
     public RollerEntity createRoller(RollerDTO roller);
+
+    public RollerEntity getRollerReferral(String name);
+
+    public void deleteRoller(String name);
 }
