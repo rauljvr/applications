@@ -25,10 +25,19 @@ public class RollerService implements IRollerService {
     }
 
     @Override
+    public RollerEntity getRollerById(final Long rollerId) {
+        return this.findRollerById(rollerId, "Roller ID not found: ");
+    }
+
+    @Override
+    public RollerEntity getRollerByName(final String rollerName) {
+        return this.findRollerByName(rollerName, "Roller's name not found: ");
+    }
+
+    @Override
     public List<String> getRollerDownline(final String name) {
         List<String> downlineList = new ArrayList<>();
-        RollerEntity roller = rollerRepository.findByName(name.toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Roller name not found: " + name));
+        RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
 
         downline(downlineList, roller);
 
@@ -41,8 +50,7 @@ public class RollerService implements IRollerService {
             throw new ResourceAlreadyExistsException("Roller already exists on the network: " + rollerDTO.getName());
         });
 
-        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getParentName().toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Referral roller not found: " + rollerDTO.getParentName()));
+        RollerEntity referralRoller = this.findRollerByName(rollerDTO.getParentName(), "Referral roller not found: ");
 
         RollerEntity rollerEntity = RollerEntity.builder()
                 .name(rollerDTO.getName().toUpperCase())
@@ -55,22 +63,18 @@ public class RollerService implements IRollerService {
 
     @Override
     public RollerEntity getRollerReferral(final String rollerName) {
-        RollerEntity roller = rollerRepository.findByName(rollerName.toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + rollerName));
+        RollerEntity roller = this.findRollerByName(rollerName, "Roller's name not found: ");
 
         if (Objects.isNull(roller.getReferralId())) {
             throw new ResourceNotFoundException("The referral roller of " + rollerName + " already left the network.");
         }
 
-        return rollerRepository.findById(roller.getReferralId())
-                .orElseThrow(() -> new ResourceNotFoundException("Referral Roller not found: " + roller.getReferralId()));
+        return this.findRollerById(roller.getReferralId(), "Referral Roller not found: ");
     }
 
     @Override
     public void deleteRoller(final String name) {
-        RollerEntity parentRoller = rollerRepository.findByName(name.toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + name));
-
+        RollerEntity parentRoller = this.findRollerByName(name, "Roller's name not found: ");
         List<RollerEntity> children = rollerRepository.findByParentId(parentRoller.getId());
 
         if (!children.isEmpty()) {
@@ -86,16 +90,23 @@ public class RollerService implements IRollerService {
 
     @Override
     public RollerEntity updateParentRoller(final String name, final RollerDTO rollerDTO) {
-        RollerEntity roller = rollerRepository.findByName(name.toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("Roller not found: " + name));
-
-        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getParentName().toUpperCase())
-                .orElseThrow(() -> new ResourceNotFoundException("New VIP host not found: " + rollerDTO.getParentName()));
+        RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
+        RollerEntity referralRoller = this.findRollerByName(rollerDTO.getParentName(), "New VIP host not found: ");
 
         roller.setName(rollerDTO.getName().toUpperCase());
         roller.setParentId(referralRoller.getId());
 
         return rollerRepository.save(roller);
+    }
+
+    private RollerEntity findRollerById(Long rollerId, String message) {
+        return rollerRepository.findById(rollerId)
+                .orElseThrow(() -> new ResourceNotFoundException(message + rollerId));
+    }
+
+    private RollerEntity findRollerByName(String rollerName, String message) {
+        return rollerRepository.findByName(rollerName.toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException(message + rollerName));
     }
 
     private void downline(List<String> downlineList, RollerEntity roller) {

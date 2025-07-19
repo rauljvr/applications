@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,20 @@ import java.util.List;
 public class RollerController {
 
     private IRollerService rollerService;
+
+    @GetMapping("/roller/{id}")
+    public ResponseEntity<RollerEntity> getRollerById(@PathVariable(value = "id") Long id) {
+        log.debug("Getting the Roller by ID: {}", id);
+
+        return ResponseEntity.ok().body(rollerService.getRollerById(id));
+    }
+
+    @GetMapping("/roller")
+    public ResponseEntity<RollerEntity> getRollerByName(@RequestParam(value = "name") @Size(max = 50) String name) {
+        log.debug("Getting the Roller: {}", name);
+
+        return ResponseEntity.ok().body(rollerService.getRollerByName(name));
+    }
 
     public RollerController(@Lazy IRollerService rollerService) {
         this.rollerService = rollerService;
