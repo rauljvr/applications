@@ -1,5 +1,7 @@
 package com.qtechgames.rollernetwork.service.impl;
 
+import com.qtechgames.rollernetwork.dto.RollerDTO;
+import com.qtechgames.rollernetwork.exceptionhandler.ResourceAlreadyExistsException;
 import com.qtechgames.rollernetwork.exceptionhandler.ResourceNotFoundException;
 import com.qtechgames.rollernetwork.model.RollerEntity;
 import com.qtechgames.rollernetwork.repository.RollerRepository;
@@ -31,6 +33,24 @@ public class RollerService implements IRollerService {
         downline(downlineList, roller);
 
         return downlineList;
+    }
+
+    @Override
+    public RollerEntity createRoller(final RollerDTO rollerDTO) {
+        rollerRepository.findByName(rollerDTO.getName().toUpperCase()).ifPresent(r -> {
+            throw new ResourceAlreadyExistsException("Roller already exists on the network: " + rollerDTO.getName());
+        });
+
+        RollerEntity referralRoller = rollerRepository.findByName(rollerDTO.getReferralName().toUpperCase())
+                .orElseThrow(() -> new ResourceNotFoundException("Referral roller not found: " + rollerDTO.getReferralName()));
+
+        RollerEntity rollerEntity = RollerEntity.builder()
+                .name(rollerDTO.getName().toUpperCase())
+                .parentId(referralRoller.getId())
+                .referralId(referralRoller.getId())
+                .build();
+
+        return rollerRepository.save(rollerEntity);
     }
 
     private void downline(List<String> downlineList, RollerEntity roller) {

@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(ResourceAlreadyExistsException.class)
+	public ResponseEntity<ErrorDetails> resourceNotFoundException(ResourceAlreadyExistsException ex) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
+		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+	}
+
 	@ExceptionHandler(GenericException.class)
 	public ResponseEntity<ErrorDetails> genericException(GenericException ex) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
@@ -34,6 +40,20 @@ public class GlobalExceptionHandler {
 		ex.getConstraintViolations().forEach(violation -> {
 			errors.put(violation.getPropertyPath().toString(), violation.getMessage());
 		});
+
+		body.put("timestamp", new Date());
+		body.put("errors", errors);
+
+		return ResponseEntity.badRequest().body(body);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Map<String, Object>> handleNotValidDtoErrors(MethodArgumentNotValidException ex) {
+		Map<String, Object> body = new LinkedHashMap<>();
+		Map<String, String> errors = new LinkedHashMap<>();
+
+		ex.getBindingResult().getFieldErrors().forEach(error ->
+				errors.put(error.getField(), error.getDefaultMessage()));
 
 		body.put("timestamp", new Date());
 		body.put("errors", errors);

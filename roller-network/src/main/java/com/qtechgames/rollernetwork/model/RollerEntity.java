@@ -30,4 +30,7 @@ public class RollerEntity {
 
     @Column(name = "parent_id", nullable = true)
     Long parentId;
+
+    @Column(name = "referral_id", nullable = true)
+    Long referralId;
 }
