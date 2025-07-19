@@ -1,5 +1,6 @@
 package com.qtechgames.rollernetwork.controller;
 
+import com.qtechgames.rollernetwork.model.RollerEntity;
 import com.qtechgames.rollernetwork.service.IRollerService;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,10 @@ public class RollerController {
         this.rollerService = rollerService;
     }
 
-    @GetMapping("/{lastname}")
-    public ResponseEntity<String> getFullName(@PathVariable(value = "lastname") String lastname) {
-        log.debug("Getting the full name: {}", lastname);
+    @GetMapping("/{name}")
+    public ResponseEntity<RollerEntity> getRoller(@PathVariable(value = "name") String name) {
+        log.debug("Getting player's info: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.getFullName(lastname));
+        return ResponseEntity.ok().body(rollerService.getRoller(name).get());
     }
 }
