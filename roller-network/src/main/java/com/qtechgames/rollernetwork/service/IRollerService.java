@@ -1,6 +1,7 @@
 package com.qtechgames.rollernetwork.service;
 
 import com.qtechgames.rollernetwork.dto.RollerDTO;
+import com.qtechgames.rollernetwork.dto.RollerTransferDTO;
 import com.qtechgames.rollernetwork.model.RollerEntity;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface IRollerService {
 
     public RollerEntity getRollerReferral(final String name);
 
-    public void deleteRoller(final String name);
+    public RollerEntity rollerExit(final String name);
 
-    public RollerEntity updateParentRoller(final String name, final RollerDTO roller);
+    public RollerEntity rollerTransfer(final String name, final RollerTransferDTO roller);
 }

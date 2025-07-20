@@ -23,14 +23,17 @@ public class RollerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(length = 50, nullable = false)
-    String name;
+    private String name;
 
     @Column(name = "parent_id", nullable = true)
-    Long parentId;
+    private Long parentId;
 
-    @Column(name = "referral_id", nullable = true)
-    Long referralId;
+    @Column(name = "referral_chain", nullable = true)
+    private String referralChain;
+
+    @Column
+    private Boolean exit;
 }

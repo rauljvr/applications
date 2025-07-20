@@ -1,6 +1,7 @@
 package com.qtechgames.rollernetwork.controller;
 
 import com.qtechgames.rollernetwork.dto.RollerDTO;
+import com.qtechgames.rollernetwork.dto.RollerTransferDTO;
 import com.qtechgames.rollernetwork.model.RollerEntity;
 import com.qtechgames.rollernetwork.service.IRollerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,10 +9,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -75,19 +73,18 @@ public class RollerController {
                 .body(rollerSaved);
     }
 
-    @DeleteMapping("/roller/{name}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteRoller(@PathVariable(value = "name") @Size(max = 50) String name) {
+    @PutMapping("/roller/{name}/exit")
+    public ResponseEntity<RollerEntity> rollerExit(@PathVariable(value = "name") @Size(max = 50) String name) {
         log.debug("Deleting Roller: {}", name);
 
-        rollerService.deleteRoller(name);
+        return ResponseEntity.ok().body(rollerService.rollerExit(name));
     }
 
-    @PutMapping("/roller/{name}")
-    public ResponseEntity<RollerEntity> updateParentRoller(@PathVariable(value = "name") @Size(max = 50) String name,
-                                                     @RequestBody @Valid RollerDTO roller) {
+    @PutMapping("/roller/{name}/transfer")
+    public ResponseEntity<RollerEntity> rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
+                                                     @RequestBody @Valid RollerTransferDTO roller) {
         log.debug("Updating Roller: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.updateParentRoller(name, roller));
+        return ResponseEntity.ok().body(rollerService.rollerTransfer(name, roller));
     }
 }
