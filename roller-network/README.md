@@ -13,7 +13,7 @@ This Rest API provides the services to manage the online casino and its network 
 
   This Spring Boot Application uses H2 as an In-Memory relational Database for testing purposes since is a lightweight database and requires low configuration.
 
-  After starting the application you can go on http://localhost:8080/h2 to log in and set these parameters and then click on "Connect":
+  After starting the application you can go on http://localhost:8080/h2 where you can find a UI to check the databae. To log in set these parameters and click on "Connect":
 
 * ***Driver Class***: org.h2.Driver
 * ***JDBC URL***: jdbc:h2:mem:rollerdb
