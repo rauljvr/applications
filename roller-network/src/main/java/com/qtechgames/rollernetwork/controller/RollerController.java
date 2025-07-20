@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +65,8 @@ public class RollerController {
         return ResponseEntity.ok().body(rollerService.getRollerReferral(name).getName());
     }
 
-    @PostMapping("/roller")
+    @PostMapping(value = "/roller", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<RollerEntity> createRoller(@RequestBody @Valid RollerDTO roller) {
         log.debug("Creating Roller: {}", roller.getName());
         RollerEntity rollerSaved = rollerService.createRoller(roller);
@@ -80,7 +82,8 @@ public class RollerController {
         return ResponseEntity.ok().body(rollerService.rollerExit(name));
     }
 
-    @PutMapping("/roller/{name}/transfer")
+    @PutMapping(value = "/roller/{name}/transfer", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<RollerEntity> rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
                                                      @RequestBody @Valid RollerTransferDTO roller) {
         log.debug("Updating Roller: {}", name);

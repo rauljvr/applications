@@ -81,10 +81,14 @@ public class RollerService implements IRollerService {
     @Transactional
     @Override
     public RollerEntity rollerExit(final String name) {
+        if (casinoExit(name)) {
+            return RollerEntity.builder().build();
+        }
+
         RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
         roller.setExit(Boolean.TRUE);
-
         List<RollerEntity> children = rollerRepository.findByParentId(roller.getId());
+
         if (!children.isEmpty()) {
             children.forEach(child -> {
                 child.setParentId(roller.getParentId());
@@ -94,6 +98,17 @@ public class RollerService implements IRollerService {
         }
 
         return rollerRepository.save(roller);
+    }
+
+    private boolean casinoExit(String name) {
+        if ("casino".equalsIgnoreCase(name)) {
+            rollerRepository.findAll().forEach(roller -> {
+                roller.setExit(Boolean.TRUE);
+                rollerRepository.save(roller);
+            });
+            return true;
+        }
+        return false;
     }
 
     @Override
