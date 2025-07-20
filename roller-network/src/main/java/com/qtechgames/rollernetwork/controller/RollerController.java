@@ -9,8 +9,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -33,61 +33,67 @@ public class RollerController {
 
     private IRollerService rollerService;
 
-    @GetMapping("/roller/{id}")
-    public ResponseEntity<RollerEntity> getRollerById(@PathVariable(value = "id") Long id) {
-        log.debug("Getting the Roller by ID: {}", id);
-
-        return ResponseEntity.ok().body(rollerService.getRollerById(id));
-    }
-
-    @GetMapping("/roller")
-    public ResponseEntity<RollerEntity> getRollerByName(@RequestParam(value = "name") @Size(max = 50) String name) {
-        log.debug("Getting the Roller: {}", name);
-
-        return ResponseEntity.ok().body(rollerService.getRollerByName(name));
-    }
-
     public RollerController(@Lazy IRollerService rollerService) {
         this.rollerService = rollerService;
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/roller/{id}")
+    public RollerEntity getRollerById(@PathVariable(value = "id") Long id) {
+        log.debug("Getting the Roller by ID: {}", id);
+
+        return rollerService.getRollerById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/roller")
+    public RollerEntity getRollerByName(@RequestParam(value = "name") @Size(max = 50) String name) {
+        log.debug("Getting the Roller: {}", name);
+
+        return rollerService.getRollerByName(name);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roller/{name}/downline")
-    public ResponseEntity<List<String>> getRollerDownline(@PathVariable(value = "name") @Size(max = 50) String name) {
+    public List<String> getRollerDownline(@PathVariable(value = "name") @Size(max = 50) String name) {
         log.debug("Getting downline of the Roller: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.getRollerDownline(name));
+        return rollerService.getRollerDownline(name);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roller/{name}/referral")
-    public ResponseEntity<String> getRollerReferral(@PathVariable(value = "name") @Size(max = 50) String name) {
+    public String getRollerReferral(@PathVariable(value = "name") @Size(max = 50) String name) {
         log.debug("Getting the Roller referral of: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.getRollerReferral(name).getName());
+        return rollerService.getRollerReferral(name).getName();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/roller", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<RollerEntity> createRoller(@RequestBody @Valid RollerDTO roller) {
+    public RollerEntity createRoller(@RequestBody @Valid RollerDTO roller) {
         log.debug("Creating Roller: {}", roller.getName());
         RollerEntity rollerSaved = rollerService.createRoller(roller);
 
-        return ResponseEntity.created(URI.create("/roller/" + rollerSaved.getId()))
-                .body(rollerSaved);
+        return rollerSaved;
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/roller/{name}/exit")
-    public ResponseEntity<RollerEntity> rollerExit(@PathVariable(value = "name") @Size(max = 50) String name) {
+    public RollerEntity rollerExit(@PathVariable(value = "name") @Size(max = 50) String name) {
         log.debug("Deleting Roller: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.rollerExit(name));
+        return rollerService.rollerExit(name);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/roller/{name}/transfer", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<RollerEntity> rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
+    public RollerEntity rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
                                                      @RequestBody @Valid RollerTransferDTO roller) {
         log.debug("Updating Roller: {}", name);
 
-        return ResponseEntity.ok().body(rollerService.rollerTransfer(name, roller));
+        return rollerService.rollerTransfer(name, roller);
     }
 }
