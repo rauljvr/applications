@@ -78,7 +78,7 @@ public class RollerService implements IRollerService {
         return this.findRollerById(referralId, "Referral Roller not found on the network: ");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public RollerEntity rollerExit(final String name) {
         if (casinoExit(name)) {
