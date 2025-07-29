@@ -1,7 +1,6 @@
 package com.qtechgames.rollernetwork.service.impl;
 
 import com.qtechgames.rollernetwork.dto.RollerDTO;
-import com.qtechgames.rollernetwork.dto.RollerTransferDTO;
 import com.qtechgames.rollernetwork.exceptionhandler.ResourceAlreadyExistsException;
 import com.qtechgames.rollernetwork.exceptionhandler.ResourceNotFoundException;
 import com.qtechgames.rollernetwork.model.RollerEntity;
@@ -50,12 +49,16 @@ public class RollerService implements IRollerService {
 
     @Override
     public RollerEntity createRoller(final RollerDTO rollerDTO) {
-        rollerRepository.findByName(rollerDTO.getName().toUpperCase()).ifPresent(r -> {
+        Optional<RollerEntity> roller = rollerRepository.findByName(rollerDTO.getName().toUpperCase());
+
+        if (roller.isPresent() && Boolean.FALSE.equals(roller.get().getExit())) {
             throw new ResourceAlreadyExistsException("Roller already exists on the network: " + rollerDTO.getName());
-        });
+        }
+        if (roller.isPresent()) {
+            throw new ResourceAlreadyExistsException("Roller already left the network: " + rollerDTO.getName());
+        }
 
         RollerEntity referralRoller = this.findRollerByName(rollerDTO.getParentName(), "Referral roller not found: ");
-
         RollerEntity rollerEntity = RollerEntity.builder()
                 .name(rollerDTO.getName().toUpperCase())
                 .parentId(referralRoller.getId())
@@ -71,7 +74,7 @@ public class RollerService implements IRollerService {
         RollerEntity roller = this.findRollerByName(name, "Roller's name not found on the network: ");
 
         if (Objects.isNull(roller.getReferralChain())) {
-            throw new ResourceNotFoundException("The roller " + name + " does not have any referral.");
+            throw new ResourceNotFoundException("The roller does not have any referral: " + name);
         }
 
         Long referralId = Long.valueOf(roller.getReferralChain().split(",")[0]);
@@ -81,43 +84,39 @@ public class RollerService implements IRollerService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public RollerEntity rollerExit(final String name) {
-        if (casinoExit(name)) {
-            return RollerEntity.builder().build();
+        RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
+        if ("casino".equalsIgnoreCase(name) && (!roller.getExit())) {
+            allExit();
+            return roller;
         }
 
-        RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
         roller.setExit(Boolean.TRUE);
         List<RollerEntity> children = rollerRepository.findByParentId(roller.getId());
 
         if (!children.isEmpty()) {
             children.forEach(child -> {
-                child.setParentId(roller.getParentId());
-                child.setReferralChain(child.getReferralChain() + "," + roller.getParentId());
-                rollerRepository.save(child);
+                RollerEntity newParent = findRollerById(roller.getParentId(), "Roller's ID not found: ");
+                rollerTransfer(child.getName(), newParent.getName());
             });
         }
 
         return rollerRepository.save(roller);
     }
 
-    private boolean casinoExit(String name) {
-        if ("casino".equalsIgnoreCase(name)) {
-            rollerRepository.findAll().forEach(roller -> {
-                roller.setExit(Boolean.TRUE);
-                rollerRepository.save(roller);
-            });
-            return true;
-        }
-        return false;
+    private void allExit() {
+        rollerRepository.findAll().forEach(roller -> {
+            roller.setExit(Boolean.TRUE);
+            rollerRepository.save(roller);
+        });
     }
 
     @Override
-    public RollerEntity rollerTransfer(final String name, final RollerTransferDTO newReferral) {
-        RollerEntity roller = this.findRollerByName(name, "Roller's name not found: ");
-        RollerEntity referralRoller = this.findRollerByName(newReferral.getName(), "New VIP host not found: ");
+    public RollerEntity rollerTransfer(final String rollerName, final String referralName) {
+        RollerEntity roller = this.findRollerByName(rollerName, "Roller's name not found: ");
+        RollerEntity referral = this.findRollerByName(referralName, "New VIP host not found: ");
 
-        roller.setParentId(referralRoller.getId());
-        roller.setReferralChain(roller.getReferralChain() + "," + referralRoller.getId());
+        roller.setParentId(referral.getId());
+        roller.setReferralChain(roller.getReferralChain() + "," + referral.getId());
 
         return rollerRepository.save(roller);
     }

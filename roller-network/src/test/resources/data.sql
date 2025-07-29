@@ -1,0 +1,15 @@
+INSERT INTO roller (id, name, parent_id, referral_chain, exit) VALUES
+  (100, 'CASINO_2', null, null, false),
+  (101, 'PLAYER_A2', 100, '100', false),
+  (102, 'PLAYER_B2', 100, '100', false),
+  (103, 'PLAYER_C2', 100, '100', false),
+  (104, 'PLAYER_D2', 101, '101', false),
+  (105, 'PLAYER_E2', 101, '101', false),
+  (106, 'PLAYER_F2', 101, '101', false),
+  (107, 'PLAYER_G2', 101, '101', false),
+  (108, 'PLAYER_H2', 103, '103', false),
+  (109, 'PLAYER_I2', 103, '103', false),
+  (110, 'PLAYER_M2', 109, '109', false),
+  (111, 'PLAYER_J2', 103, '103', false),
+  (112, 'PLAYER_K2', 103, '103', false),
+  (113, 'PLAYER_N2', 112, '112', false);

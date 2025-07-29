@@ -1,14 +1,14 @@
 package com.qtechgames.rollernetwork.controller;
 
 import com.qtechgames.rollernetwork.dto.RollerDTO;
+import com.qtechgames.rollernetwork.dto.RollerResponse;
 import com.qtechgames.rollernetwork.dto.RollerTransferDTO;
-import com.qtechgames.rollernetwork.model.RollerEntity;
 import com.qtechgames.rollernetwork.service.IRollerService;
+import com.qtechgames.rollernetwork.util.MapConverter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -32,25 +32,27 @@ import java.util.List;
 public class RollerController {
 
     private IRollerService rollerService;
+    private MapConverter mapConverter;
 
-    public RollerController(@Lazy IRollerService rollerService) {
+    public RollerController(IRollerService rollerService, MapConverter mapConverter) {
         this.rollerService = rollerService;
+        this.mapConverter = mapConverter;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roller/{id}")
-    public RollerEntity getRollerById(@PathVariable(value = "id") Long id) {
+    public RollerResponse getRollerById(@PathVariable(value = "id") Long id) {
         log.debug("Getting the Roller by ID: {}", id);
 
-        return rollerService.getRollerById(id);
+        return mapConverter.convertToDto(rollerService.getRollerById(id));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roller")
-    public RollerEntity getRollerByName(@RequestParam(value = "name") @Size(max = 50) String name) {
+    public RollerResponse getRollerByName(@RequestParam(value = "name") @Size(max = 50) String name) {
         log.debug("Getting the Roller: {}", name);
 
-        return rollerService.getRollerByName(name);
+        return mapConverter.convertToDto(rollerService.getRollerByName(name));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -63,37 +65,36 @@ public class RollerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roller/{name}/referral")
-    public String getRollerReferral(@PathVariable(value = "name") @Size(max = 50) String name) {
+    public RollerResponse getRollerReferral(@PathVariable(value = "name") @Size(max = 50) String name) {
         log.debug("Getting the Roller referral of: {}", name);
 
-        return rollerService.getRollerReferral(name).getName();
+        return mapConverter.convertToDto(rollerService.getRollerReferral(name));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/roller", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public RollerEntity createRoller(@RequestBody @Valid RollerDTO roller) {
+    public RollerResponse createRoller(@RequestBody @Valid RollerDTO roller) {
         log.debug("Creating Roller: {}", roller.getName());
-        RollerEntity rollerSaved = rollerService.createRoller(roller);
 
-        return rollerSaved;
+        return mapConverter.convertToDto(rollerService.createRoller(roller));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/roller/{name}/exit")
-    public RollerEntity rollerExit(@PathVariable(value = "name") @Size(max = 50) String name) {
-        log.debug("Deleting Roller: {}", name);
+    public RollerResponse rollerExit(@PathVariable(value = "name") @Size(max = 50) String name) {
+        log.debug("Roller leaving the network: {}", name);
 
-        return rollerService.rollerExit(name);
+        return mapConverter.convertToDto(rollerService.rollerExit(name));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/roller/{name}/transfer", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public RollerEntity rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
-                                                     @RequestBody @Valid RollerTransferDTO roller) {
+    public RollerResponse rollerTransfer(@PathVariable(value = "name") @Size(max = 50) String name,
+                                                     @RequestBody @Valid RollerTransferDTO referralRoller) {
         log.debug("Updating Roller: {}", name);
 
-        return rollerService.rollerTransfer(name, roller);
+        return mapConverter.convertToDto(rollerService.rollerTransfer(name, referralRoller.getName()));
     }
 }
