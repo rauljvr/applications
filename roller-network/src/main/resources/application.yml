@@ -3,10 +3,10 @@ server:
 
 spring:
   application:
-    name: rollersnetwork
+    name: highrollernetwork
 
   datasource:
-    url: jdbc:h2:mem:rollerdb
+    url: jdbc:h2:mem:highrollerdb
     driverClassName: org.h2.Driver
     username: sa
     password:

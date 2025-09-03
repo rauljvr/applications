@@ -1,7 +1,7 @@
-INSERT INTO roller (id, name, parent_id, referral_chain, exit) VALUES
+INSERT INTO player (id, name, parent_id, referral_chain, exit) VALUES
   (0, 'CASINO', null, null, false);
 
-INSERT INTO roller (name, parent_id, referral_chain, exit) VALUES
+INSERT INTO player (name, parent_id, referral_chain, exit) VALUES
   ('PLAYER A', 0, '0', false),
   ('PLAYER B', 0, '0', false),
   ('PLAYER C', 0, '0', false),

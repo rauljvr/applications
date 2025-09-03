@@ -8,11 +8,11 @@
 		<version>3.5.3</version>
 		<relativePath/>
 	</parent>
-	<groupId>com.qtechgames</groupId>
-	<artifactId>roller-network</artifactId>
+	<groupId>com.tech</groupId>
+	<artifactId>high-roller-network</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Roller Network</name>
-	<description>QTech Games Test</description>
+	<name>High Roller's Network</name>
+	<description>Spring Boot Application</description>
 	<url/>
 	<properties>
 		<java.version>17</java.version>

@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "2014f694-eacb-4299-8acb-3badbf822594",
+		"name": "High Roller Network",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30714447"
+	},
+	"item": [
+		{
+			"name": "Get Player by Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player?name=player d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "player d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player/:Id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player",
+						":Id"
+					],
+					"variable": [
+						{
+							"key": "Id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player's Referrer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player/:name/referrer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player",
+						":name",
+						"referrer"
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "player D"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player's downline",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player/:name/downline",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player",
+						":name",
+						"downline"
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "casino"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Player",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"player bb2\",\n    \"parentName\": \"casino\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player's exit",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player/:name/exit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player",
+						":name",
+						"exit"
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "player a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Player's Transfer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"player c\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/highrollernetwork/player/:name/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetwork",
+						"player",
+						":name",
+						"transfer"
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "player d"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
