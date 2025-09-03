@@ -56,30 +56,48 @@ Once the application is running you can go on http://localhost:8080/swagger-ui/i
 ### REST API endpoints:
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{id} </span>
-  <br>Operation to get the player's info by his ID, regardless of whether the player left the network or not<br><br>
+  </br>Operation to get the player's info by his ID, regardless of whether the player left the network or not.
+```text
+curl -X GET "http://localhost:8080/highrollernetwork/player/1"
+```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
   <br>Operation to get the player's info by his name (Request parameter), regardless of whether the player left the network or not. 
-  You can also check the referral chain of the player.<br><br>
+  You can also check the referral chain of the player.
+```text
+curl -X GET "http://localhost:8080/highrollernetwork/player?name=player%20d"
+```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/referrer </span>
-  <br>Operation to get who originally brought whom to the casino. The player has to be part of the network.<br><br>
+  <br>Operation to get who originally brought whom to the casino. The player has to be part of the network.
+```text
+curl -X GET "http://localhost:8080/highrollernetwork/player/player%20d/referrer"
+```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/downline </span>
-  <br>Operation to see the entire network downline of a player. The player has to be part of the network.<br><br>
+  <br>Operation to see the entire network downline of a player. The player has to be part of the network.
+```text
+curl -X GET "http://localhost:8080/highrollernetwork/player/casino/downline"
+```
 
 * ***POST***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
-  <br>Operation to add new players under their referrers.<br><br>
-  Body example: { "name": "Player T", "parentName": "Player C"}<br><br>
+  <br>Operation to add new players under their referrers.
+```text
+curl -X POST --header "Content-Type: application/json" --data '{"name": "player P", "parentName": "Player B"}' "http://localhost:8080/highrollernetwork/player"
+```
 
 * ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/exit </span>
-  <br>Operation for players to leave the network. If a player leaves the network, the exit flag sets true and all players in his downline get his parent player.<br><br>
+  <br>Operation for players to leave the network. If a player leaves the network, the exit flag sets true and all players in his downline get his parent player.
+```text
+curl -X PUT "http://localhost:8080/highrollernetwork/player/player%20E/exit"
+```
 
 * ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/transfer </span>
   <br>Operation to transfer players between different VIP hosts. <br>
-  The player's parent will be updated and the new parent is added to the tracking history.<br><br>
-  Body example: { "name": "Player F"}<br><br>
-
+  The player's parent will be updated and the new parent is added to the tracking history.
+```text
+curl -X PUT --header "Content-Type: application/json" --data '{"name": "player b"}' "http://localhost:8080/highrollernetwork/player/player%20M/transfer"
+```
 ### Postman collection
 
 In addition to this, in the resources folder of the project you can find the Postman collection (v2.1) to test all operations.
