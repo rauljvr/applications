@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -30,6 +31,14 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorDetails> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+		log.warn("Error found during validation: {}", ex.getMessage());
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), "Request parameter '" + ex.getName() + "' is invalid");
+
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
+
 	@ExceptionHandler(GenericException.class)
 	public ResponseEntity<ErrorDetails> genericException(GenericException ex) {
 		log.error("Unexpected error", ex);
@@ -39,7 +48,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<Map<String, Object>> handleValidationErrors(ConstraintViolationException ex) {
-		log.warn("Validation failed: {}", ex.getMessage());
+		log.warn("Error(s) found during validation: {}", ex.getMessage());
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		Map<String, String> errors = new LinkedHashMap<>();
@@ -56,7 +65,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, Object>> handleNotValidDtoErrors(MethodArgumentNotValidException ex) {
-		log.warn("Validation failed: {}", ex.getMessage());
+		log.warn("Error(s) found during validation: {}", ex.getMessage());
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		Map<String, String> errors = new LinkedHashMap<>();

@@ -48,7 +48,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player")
-    public PlayerResponse getPlayerByName(@RequestParam(value = "name") @Size(max = 50) String playerName) {
+    public PlayerResponse getPlayerByName(@RequestParam(value = "name") @Size(max = 20) String playerName) {
         log.debug("Getting the Player: {}", playerName);
 
         return mapConverter.convertToDto(playerService.getPlayerByName(playerName));
@@ -56,7 +56,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player/{name}/downline")
-    public List<String> getPlayerDownline(@PathVariable(value = "name") @Size(max = 50) String playerName) {
+    public List<String> getPlayerDownline(@PathVariable(value = "name") @Size(max = 20) String playerName) {
         log.debug("Getting downline of the Player: {}", playerName);
 
         return playerService.getPlayerDownline(playerName);
@@ -64,7 +64,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player/{name}/referrer")
-    public PlayerResponse getPlayerReferrer(@PathVariable(value = "name") @Size(max = 50) String playerName) {
+    public PlayerResponse getPlayerReferrer(@PathVariable(value = "name") @Size(max = 20) String playerName) {
         log.debug("Getting the Player's referrer of: {}", playerName);
 
         return mapConverter.convertToDto(playerService.getPlayerReferrer(playerName));
@@ -80,7 +80,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/player/{name}/exit")
-    public PlayerResponse playerExit(@PathVariable(value = "name") @Size(max = 50) String playerName) {
+    public PlayerResponse playerExit(@PathVariable(value = "name") @Size(max = 20) String playerName) {
         log.debug("Player leaving the network: {}", playerName);
 
         return mapConverter.convertToDto(playerService.playerExit(playerName));
@@ -88,7 +88,7 @@ public class PlayerController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/player/{name}/transfer")
-    public PlayerResponse playerTransfer(@PathVariable(value = "name") @Size(max = 50) String playerName,
+    public PlayerResponse playerTransfer(@PathVariable(value = "name") @Size(max = 20) String playerName,
                                          @RequestBody @Valid PlayerTransferRequest referralPlayer) {
         log.debug("Updating Player: {}", playerName);
 

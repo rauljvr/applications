@@ -1,6 +1,6 @@
-# Test for QTech Games
+# Spring Boot Application
 
-This Rest API provides the services to manage the online casino and its network of players.
+This application exposes a Rest API to provide some services to manage an online casino and its network of players.
 <br>
 
 ## Septup
