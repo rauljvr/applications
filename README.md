@@ -1,8 +1,8 @@
-# The High Roller's Network
+# The High Roller Network
 
 ## The network
 
-The application consists of building a system to create the hierarchical relationships of the high roller's networks in a casino.
+The application consists of building a system to create the hierarchical relationships of the high roller's network in a casino.
 
 ## The structure of the network
 
