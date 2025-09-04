@@ -1,6 +1,7 @@
 package com.tech.highrollernetwork.service.impl;
 
 import com.tech.highrollernetwork.dto.PlayerRequest;
+import com.tech.highrollernetwork.exceptionhandler.GenericException;
 import com.tech.highrollernetwork.exceptionhandler.ResourceAlreadyExistsException;
 import com.tech.highrollernetwork.exceptionhandler.ResourceNotFoundException;
 import com.tech.highrollernetwork.model.PlayerEntity;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -52,7 +52,7 @@ public class PlayerService implements IPlayerService {
     }
 
     /**
-     * Get the player's downline by the name
+     * Get the player's downline recursively
      *
      * @param playerName
      * @return list of player's names
@@ -76,25 +76,26 @@ public class PlayerService implements IPlayerService {
      * @throws {@link ResourceNotFoundException}, {@link ResourceAlreadyExistsException}
      */
     @Override
-    public PlayerEntity createPlayer(final PlayerRequest playerRequest) {
-        Optional<PlayerEntity> player = playerRepository.findByName(playerRequest.getName().toUpperCase());
+    public PlayerEntity createPlayer(final PlayerRequest player) {
+        playerRepository.findByName(player.getName().toUpperCase())
+                .ifPresent(p -> {
+                    if (Boolean.FALSE.equals(p.getExit())) {
+                        throw new ResourceAlreadyExistsException("Player already exists on the network: "
+                                + player.getName());
+                    } else {
+                        throw new ResourceNotFoundException("Player already left the network: " + player.getName());
+                    }
+                });
 
-        if (player.isPresent() && Boolean.FALSE.equals(player.get().getExit())) {
-            throw new ResourceAlreadyExistsException("Player already exists on the network: " + playerRequest.getName());
-        }
-        if (player.isPresent()) {
-            throw new ResourceAlreadyExistsException("Player already left the network: " + playerRequest.getName());
-        }
-
-        PlayerEntity referralPlayer = this.findPlayerByName(playerRequest.getParentName(), "Referral player not found: ");
-        PlayerEntity playerEntity = PlayerEntity.builder()
-                .name(playerRequest.getName().toUpperCase())
-                .parentId(referralPlayer.getId())
-                .referralChain(String.valueOf(referralPlayer.getId()))
-                .exit(Boolean.FALSE)
-                .build();
-
-        return playerRepository.save(playerEntity);
+        return Optional.of(this.findPlayerByName(player.getParentName(), "Referral player not found on the network: "))
+                .map(referralPlayer -> PlayerEntity.builder()
+                        .name(player.getName().toUpperCase())
+                        .parentId(referralPlayer.getId())
+                        .referralChain(String.valueOf(referralPlayer.getId()))
+                        .exit(Boolean.FALSE)
+                        .build())
+                .map(playerRepository::save)
+                .orElseThrow(() -> new GenericException("Unexpected error creating player."));
     }
 
     /**
@@ -106,14 +107,12 @@ public class PlayerService implements IPlayerService {
      */
     @Override
     public PlayerEntity getPlayerReferrer(final String playerName) {
-        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found on the network: ");
-
-        if (Objects.isNull(player.getReferralChain())) {
-            throw new ResourceNotFoundException("The player does not have any referral: " + playerName);
-        }
-
-        Long referralId = Long.valueOf(player.getReferralChain().split(",")[0]);
-        return this.findPlayerById(referralId, "Referral Player not found on the network: ");
+        return Optional.of(this.findPlayerByName(playerName, "Player's name not found on the network: "))
+                .map(PlayerEntity::getReferralChain)
+                .map(chain -> chain.split(",")[0])
+                .map(Long::valueOf)
+                .map(referralId -> this.findPlayerById(referralId, "Referral Player not found on the network: "))
+                .orElseThrow(() -> new ResourceNotFoundException("The player does not have any referral: " + playerName));
     }
 
     /**
@@ -126,16 +125,17 @@ public class PlayerService implements IPlayerService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public PlayerEntity playerExit(final String playerName) {
-        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found: ");
-        if ("casino".equalsIgnoreCase(playerName) && (!player.getExit())) {
-            allExit();
-            return player;
-        }
-
-        player.setExit(Boolean.TRUE);
-        updateReferrerOfPlayer(player);
-
-        return playerRepository.save(player);
+        return Optional.of(this.findPlayerByName(playerName, "Player's name not found: "))
+                .map(player -> {
+                    if ("casino".equalsIgnoreCase(playerName) && Boolean.FALSE.equals(player.getExit())) {
+                        allExit();
+                        return player;
+                    }
+                    player.setExit(Boolean.TRUE);
+                    updateReferrerOfPlayer(player);
+                    return playerRepository.save(player);
+                })
+                .orElseThrow(() -> new GenericException("Unexpected error during player exit"));
     }
 
     /**
@@ -148,13 +148,15 @@ public class PlayerService implements IPlayerService {
      */
     @Override
     public PlayerEntity playerTransfer(final String playerName, final String referralName) {
-        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found: ");
-        PlayerEntity referral = this.findPlayerByName(referralName, "New referrer not found: ");
-
-        player.setParentId(referral.getId());
-        player.setReferralChain(player.getReferralChain() + "," + referral.getId());
-
-        return playerRepository.save(player);
+        return Optional.of(this.findPlayerByName(playerName, "Player's name not found: "))
+                .flatMap(player -> Optional.of(this.findPlayerByName(referralName, "New referrer not found: "))
+                        .map(referral -> {
+                            player.setParentId(referral.getId());
+                            player.setReferralChain(player.getReferralChain() + "," + referral.getId());
+                            return player;
+                        }))
+                .map(playerRepository::save)
+                .orElseThrow(() -> new GenericException("Unexpected error during player transfer"));
     }
 
     /**
@@ -164,14 +166,11 @@ public class PlayerService implements IPlayerService {
      * @throws {@link ResourceNotFoundException}
      */
     private void updateReferrerOfPlayer(PlayerEntity player) {
-        List<PlayerEntity> children = playerRepository.findByParentId(player.getId());
-
-        if (!children.isEmpty()) {
-            children.forEach(child -> {
-                PlayerEntity newParent = findPlayerById(player.getParentId(), "Player's ID not found: ");
-                playerTransfer(child.getName(), newParent.getName());
-            });
-        }
+        playerRepository.findByParentId(player.getId())
+                .forEach(child -> {
+                    PlayerEntity newParent = findPlayerById(player.getParentId(), "Player's ID not found: ");
+                    playerTransfer(child.getName(), newParent.getName());
+                });
     }
 
     /**
@@ -206,16 +205,13 @@ public class PlayerService implements IPlayerService {
      * @throws {@link ResourceNotFoundException}
      */
     private PlayerEntity findPlayerByName(String playerName, String message) {
-        Optional<PlayerEntity> player = playerRepository.findByName(playerName.toUpperCase());
-        if (player.isEmpty() || Boolean.TRUE.equals(player.get().getExit())) {
-            throw new ResourceNotFoundException(message + playerName);
-        }
-
-        return player.get();
+        return playerRepository.findByName(playerName.toUpperCase())
+                .filter(p -> Boolean.FALSE.equals(p.getExit()))
+                .orElseThrow(() -> new ResourceNotFoundException(message + playerName));
     }
 
     /**
-     * recursive method to get the downline list of a player
+     * recursive method to get the player downline list of a player
      *
      * @param downlineList to list the player's downline
      * @param player {@link PlayerEntity}

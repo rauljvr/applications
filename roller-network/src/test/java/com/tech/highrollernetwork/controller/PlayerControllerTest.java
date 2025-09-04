@@ -178,7 +178,7 @@ class PlayerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(newPlayer)))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("Referral player not found: Player_B2",
+                .andExpect(result -> assertEquals("Referral player not found on the network: Player_B2",
                         result.getResolvedException().getMessage()));
     }
 
