@@ -1,10 +1,10 @@
 # The High Roller's Network
 
-## The Network
+## The network
 
 The application consists of building a system to create the hierarchical relationships of the high roller's networks in a casino.
 
-## The Structure of the Network
+## The structure of the network
 
 In the casino, every player is a node and might refer another player:
 
@@ -32,7 +32,7 @@ D --> M[12:Player K]
 M --> N[13:Player N]
 ```
 
-## The Goals
+## The goals
 
 Design the API service that can manage the entire player's network.
 The requirements are:
@@ -49,7 +49,7 @@ The requirements are:
 4. Network Tracking
     * Given any player in the network, get their entire downline.
 
-## Examples of the requirement 4
+## Examples of tracking on the network
 
 1. Get all players, must return in this order:
 
