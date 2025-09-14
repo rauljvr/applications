@@ -52,23 +52,6 @@ public class PlayerService implements IPlayerService {
     }
 
     /**
-     * Get the player's downline recursively
-     *
-     * @param playerName
-     * @return list of player's names
-     * @throws {@link ResourceNotFoundException}
-     */
-    @Override
-    public List<String> getPlayerDownline(final String playerName) {
-        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found on the network: ");
-
-        List<String> downlineList = new ArrayList<>();
-        downline(downlineList, player);
-
-        return downlineList;
-    }
-
-    /**
      * Create a new player on the network
      *
      * @param {@link PlayerRequest}
@@ -157,6 +140,23 @@ public class PlayerService implements IPlayerService {
                         }))
                 .map(playerRepository::save)
                 .orElseThrow(() -> new GenericException("Unexpected error during player transfer"));
+    }
+
+    /**
+     * Get the player's downline recursively
+     *
+     * @param playerName
+     * @return list of player's names
+     * @throws {@link ResourceNotFoundException}
+     */
+    @Override
+    public List<String> getPlayerDownline(final String playerName) {
+        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found on the network: ");
+
+        List<String> downlineList = new ArrayList<>();
+        downline(downlineList, player);
+
+        return downlineList;
     }
 
     /**

@@ -41,7 +41,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player/{id}")
     public PlayerResponse getPlayerById(@PathVariable(value = "id") Long playerId) {
-        log.debug("Getting the Player by ID: {}", playerId);
+        log.info("Getting the Player by ID: {}", playerId);
 
         return mapConverter.convertToDto(playerService.getPlayerById(playerId));
     }
@@ -49,7 +49,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player")
     public PlayerResponse getPlayerByName(@RequestParam(value = "name") @Size(max = 20) String playerName) {
-        log.debug("Getting the Player: {}", playerName);
+        log.info("Getting the Player: {}", playerName);
 
         return mapConverter.convertToDto(playerService.getPlayerByName(playerName));
     }
@@ -57,7 +57,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player/{name}/downline")
     public List<String> getPlayerDownline(@PathVariable(value = "name") @Size(max = 20) String playerName) {
-        log.debug("Getting downline of the Player: {}", playerName);
+        log.info("Getting downline of the Player: {}", playerName);
 
         return playerService.getPlayerDownline(playerName);
     }
@@ -65,7 +65,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/player/{name}/referrer")
     public PlayerResponse getPlayerReferrer(@PathVariable(value = "name") @Size(max = 20) String playerName) {
-        log.debug("Getting the Player's referrer of: {}", playerName);
+        log.info("Getting the Player's referrer of: {}", playerName);
 
         return mapConverter.convertToDto(playerService.getPlayerReferrer(playerName));
     }
@@ -73,7 +73,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/player")
     public PlayerResponse createPlayer(@RequestBody @Valid PlayerRequest player) {
-        log.debug("Creating Player: {}", player.getName());
+        log.info("Creating Player: {}", player.getName());
 
         return mapConverter.convertToDto(playerService.createPlayer(player));
     }
@@ -81,7 +81,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/player/{name}/exit")
     public PlayerResponse playerExit(@PathVariable(value = "name") @Size(max = 20) String playerName) {
-        log.debug("Player leaving the network: {}", playerName);
+        log.info("Player leaving the network: {}", playerName);
 
         return mapConverter.convertToDto(playerService.playerExit(playerName));
     }
@@ -90,7 +90,7 @@ public class PlayerController {
     @PutMapping("/player/{name}/transfer")
     public PlayerResponse playerTransfer(@PathVariable(value = "name") @Size(max = 20) String playerName,
                                          @RequestBody @Valid PlayerTransferRequest referralPlayer) {
-        log.debug("Updating Player: {}", playerName);
+        log.info("Updating Player: {}", playerName);
 
         return mapConverter.convertToDto(playerService.playerTransfer(playerName, referralPlayer.getName()));
     }

@@ -105,7 +105,7 @@ class PlayerControllerTest {
         System.out.println(players);
         assertNotNull(players);
         assertEquals(14, players.size());
-        /*assertEquals("CASINO_2", players.get(0));
+        assertEquals("CASINO_2", players.get(0));
         assertEquals("PLAYER_A", players.get(1));
         assertEquals("PLAYER_D", players.get(2));
         assertEquals("PLAYER_E", players.get(3));
@@ -118,7 +118,7 @@ class PlayerControllerTest {
         assertEquals("PLAYER_M", players.get(10));
         assertEquals("PLAYER_J", players.get(11));
         assertEquals("PLAYER_K", players.get(12));
-        assertEquals("PLAYER_N", players.get(13));*/
+        assertEquals("PLAYER_N", players.get(13));
     }
 
     @Test
