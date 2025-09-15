@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,7 @@ public class PlayerController {
     private IPlayerService playerService;
     private MapConverter mapConverter;
 
-    public PlayerController(@Lazy IPlayerService playerService, MapConverter mapConverter) {
+    public PlayerController(IPlayerService playerService, MapConverter mapConverter) {
         this.playerService = playerService;
         this.mapConverter = mapConverter;
     }

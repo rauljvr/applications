@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(GenericException.class)
 	public ResponseEntity<ErrorDetails> genericException(GenericException ex) {
-		log.error("Unexpected error", ex);
+		log.error("Unexpected error... ", ex);
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
 
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<Map<String, Object>> handleValidationErrors(ConstraintViolationException ex) {
-		log.warn("Validation failed: {}", ex.getMessage());
+		log.warn("Error(s) found during validation: {}", ex.getMessage());
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		Map<String, String> errors = new LinkedHashMap<>();
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, Object>> handleNotValidDtoErrors(MethodArgumentNotValidException ex) {
-		log.warn("Validation failed: {}", ex.getMessage());
+		log.warn("Error(s) found during validation: {}", ex.getMessage());
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		Map<String, String> errors = new LinkedHashMap<>();
