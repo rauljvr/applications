@@ -183,6 +183,41 @@
         }
       }
     },
+    "/highrollernetworkreactive/player/{name}/downline": {
+      "get": {
+        "tags": [
+          "High Roller's Network Management"
+        ],
+        "operationId": "getPlayerDownline",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 20,
+              "minLength": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/highrollernetworkreactive/player/{id}": {
       "get": {
         "tags": [
