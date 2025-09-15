@@ -4,6 +4,8 @@ import com.tech.highrollernetworkreactive.dto.PlayerRequest;
 import com.tech.highrollernetworkreactive.model.PlayerEntity;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 public interface IPlayerService {
 
     public Mono<PlayerEntity> getPlayerById(final Long playerId);
@@ -17,4 +19,6 @@ public interface IPlayerService {
     public Mono<PlayerEntity> playerExit(final String playerName);
 
     public Mono<PlayerEntity> playerTransfer(final String playerName, final String newReferral);
+
+    public Mono<List<String>> getPlayerDownline(final String playerName);
 }

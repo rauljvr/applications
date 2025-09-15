@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Slf4j
 @Validated
 @RestController
@@ -90,5 +92,13 @@ public class PlayerController {
 
         return playerService.playerTransfer(playerName, transferRequest.getParentName())
                 .map(player -> mapConverter.convertToDto(player));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/player/{name}/downline")
+    public Mono<List<String>> getPlayerDownline(@PathVariable(value = "name") @Size(max = 20) String playerName) {
+        log.info("Getting downline of the Player: {}", playerName);
+
+        return playerService.getPlayerDownline(playerName);
     }
 }

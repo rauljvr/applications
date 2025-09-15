@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -94,6 +96,24 @@ public class PlayerService implements IPlayerService {
 
             return playerEntity;
         }).flatMap(playerRepository::save);
+    }
+
+    @Override
+    public Mono<List<String>> getPlayerDownline(final String playerName) {
+        return this.findPlayerByName(playerName, "Player's name not found: ")
+                .flatMapMany(this::downline)
+                .collectList();
+    }
+
+    private Flux<String> downline(PlayerEntity player) {
+        Flux<String> current = Boolean.FALSE.equals(player.getExit())
+                ? Flux.just(player.getName())
+                : Flux.empty();
+
+        Flux<String> children = playerRepository.findByParentId(player.getId())
+                .flatMap(this::downline);
+
+        return Flux.concat(current, children);
     }
 
     private Mono<PlayerEntity> addNewPlayer(PlayerRequest playerRequest) {
