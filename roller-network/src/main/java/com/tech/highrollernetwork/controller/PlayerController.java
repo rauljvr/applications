@@ -89,9 +89,9 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/player/{name}/transfer")
     public PlayerResponse playerTransfer(@PathVariable(value = "name") @Size(max = 20) String playerName,
-                                         @RequestBody @Valid PlayerTransferRequest referralPlayer) {
+                                         @RequestBody @Valid PlayerTransferRequest transferRequest) {
         log.info("Updating Player: {}", playerName);
 
-        return mapConverter.convertToDto(playerService.playerTransfer(playerName, referralPlayer.getName()));
+        return mapConverter.convertToDto(playerService.playerTransfer(playerName, transferRequest.getName()));
     }
 }

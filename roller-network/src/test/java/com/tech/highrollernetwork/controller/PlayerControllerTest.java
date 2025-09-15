@@ -127,7 +127,7 @@ class PlayerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("Player's name not found on the network: Player_25",
+                .andExpect(result -> assertEquals("Player's name not found: Player_25",
                         result.getResolvedException().getMessage()));
     }
 
@@ -144,7 +144,7 @@ class PlayerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("Player's name not found on the network: Player_ZZ",
+                .andExpect(result -> assertEquals("Player's name not found: Player_ZZ",
                         result.getResolvedException().getMessage()));
     }
 
@@ -178,7 +178,7 @@ class PlayerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(newPlayer)))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("Referral player not found on the network: Player_B2",
+                .andExpect(result -> assertEquals("Referral player not found: Player_B2",
                         result.getResolvedException().getMessage()));
     }
 

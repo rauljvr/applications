@@ -16,7 +16,7 @@ import lombok.Setter;
 public class PlayerTransferRequest {
 
     @NotNull
-    @Size(min=1, max = 50)
+    @Size(min=1, max = 20)
     private String name;
 
 }

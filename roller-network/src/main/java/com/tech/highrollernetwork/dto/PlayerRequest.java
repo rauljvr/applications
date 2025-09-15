@@ -16,11 +16,11 @@ import lombok.Setter;
 public class PlayerRequest {
 
     @NotNull
-    @Size(min=1, max = 50)
+    @Size(min=1, max = 20)
     private String name;
 
     @NotNull
-    @Size(min=1, max = 50)
+    @Size(min=1, max = 20)
     private String parentName;
 
 }

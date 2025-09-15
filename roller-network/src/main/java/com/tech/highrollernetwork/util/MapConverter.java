@@ -12,7 +12,6 @@ public class MapConverter {
 
     private ModelMapper modelMapper;
 
-    @Autowired
     public MapConverter(@Lazy ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }

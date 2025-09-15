@@ -20,21 +20,24 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ErrorDetails> resourceNotFoundException(ResourceNotFoundException ex) {
 		log.info("Resource not found. {}", ex.getMessage());
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.NOT_FOUND.value(), ex.getMessage());
+
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ResourceAlreadyExistsException.class)
 	public ResponseEntity<ErrorDetails> resourceNotFoundException(ResourceAlreadyExistsException ex) {
 		log.info("Resource already exists. {}", ex.getMessage());
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.CONFLICT.value(), ex.getMessage());
+
 		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorDetails> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
 		log.warn("Error found during validation: {}", ex.getMessage());
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), "Request parameter '" + ex.getName() + "' is invalid");
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.BAD_REQUEST.value(),
+				"Request parameter '" + ex.getName() + "' is invalid");
 
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
@@ -42,7 +45,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(GenericException.class)
 	public ResponseEntity<ErrorDetails> genericException(GenericException ex) {
 		log.error("Unexpected error", ex);
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage());
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
+
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -58,6 +62,7 @@ public class GlobalExceptionHandler {
 		});
 
 		body.put("timestamp", new Date());
+		body.put("statusCode", HttpStatus.BAD_REQUEST.value());
 		body.put("errors", errors);
 
 		return ResponseEntity.badRequest().body(body);
@@ -74,6 +79,7 @@ public class GlobalExceptionHandler {
 				errors.put(error.getField(), error.getDefaultMessage()));
 
 		body.put("timestamp", new Date());
+		body.put("statusCode", HttpStatus.BAD_REQUEST.value());
 		body.put("errors", errors);
 
 		return ResponseEntity.badRequest().body(body);

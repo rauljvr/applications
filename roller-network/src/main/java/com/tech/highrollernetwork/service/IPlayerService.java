@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IPlayerService {
 
-    public PlayerEntity getPlayerById(Long playerId);
+    public PlayerEntity getPlayerById(final Long playerId);
 
-    public PlayerEntity getPlayerByName(String playerName);
+    public PlayerEntity getPlayerByName(final String playerName);
 
     public List<String> getPlayerDownline(final String playerName);
 

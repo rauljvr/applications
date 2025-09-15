@@ -12,5 +12,6 @@ import java.util.Date;
 public class ErrorDetails {
 
 	private Date timestamp;
+	private int statusCode;
 	private String message;
 }

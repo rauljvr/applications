@@ -70,7 +70,7 @@ public class PlayerService implements IPlayerService {
                     }
                 });
 
-        return Optional.of(this.findPlayerByName(player.getParentName(), "Referral player not found on the network: "))
+        return Optional.of(this.findPlayerByName(player.getParentName(), "Referral player not found: "))
                 .map(referralPlayer -> PlayerEntity.builder()
                         .name(player.getName().toUpperCase())
                         .parentId(referralPlayer.getId())
@@ -90,11 +90,11 @@ public class PlayerService implements IPlayerService {
      */
     @Override
     public PlayerEntity getPlayerReferrer(final String playerName) {
-        return Optional.of(this.findPlayerByName(playerName, "Player's name not found on the network: "))
+        return Optional.of(this.findPlayerByName(playerName, "Player's name not found: "))
                 .map(PlayerEntity::getReferralChain)
                 .map(chain -> chain.split(",")[0])
                 .map(Long::valueOf)
-                .map(referralId -> this.findPlayerById(referralId, "Referral Player not found on the network: "))
+                .map(referralId -> this.findPlayerById(referralId, "Referral Player not found: "))
                 .orElseThrow(() -> new ResourceNotFoundException("The player does not have any referral: " + playerName));
     }
 
@@ -151,7 +151,7 @@ public class PlayerService implements IPlayerService {
      */
     @Override
     public List<String> getPlayerDownline(final String playerName) {
-        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found on the network: ");
+        PlayerEntity player = this.findPlayerByName(playerName, "Player's name not found: ");
 
         List<String> downlineList = new ArrayList<>();
         downline(downlineList, player);
