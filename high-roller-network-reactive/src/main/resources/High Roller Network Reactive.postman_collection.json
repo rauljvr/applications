@@ -88,6 +88,34 @@
 			"response": []
 		},
 		{
+			"name": "Get Player's downline",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/highrollernetworkreactive/player/:name/downline",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"highrollernetworkreactive",
+						"player",
+						":name",
+						"downline"
+					],
+					"variable": [
+						{
+							"key": "name",
+							"value": "player k"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Post Player",
 			"request": {
 				"method": "POST",
