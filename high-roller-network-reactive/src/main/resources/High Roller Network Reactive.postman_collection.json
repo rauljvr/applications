@@ -12,12 +12,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player?name=player b",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player?name=player b",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player"
@@ -38,12 +38,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player/:Id",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player/:Id",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player",
@@ -65,12 +65,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player/:name/referral",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player/:name/referral",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player",
@@ -93,12 +93,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player/:name/downline",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player/:name/downline",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player",
@@ -130,12 +130,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player"
@@ -150,12 +150,12 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player/:name/exit",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player/:name/exit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player",
@@ -187,12 +187,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/highrollernetworkreactive/player/:name/transfer",
+					"raw": "http://localhost:8081/highrollernetworkreactive/player/:name/transfer",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"highrollernetworkreactive",
 						"player",
