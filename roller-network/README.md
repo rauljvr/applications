@@ -3,17 +3,18 @@
 This application exposes a Rest API to provide some services to manage an online casino and its network of players.
 <br>
 
-## Septup
+### Septup
 
 * ***Spring Boot***: 3.5.3
 * ***JRE***: 17.0.12
 * ***Maven***: 3.9.5
+* ***Docker/Docker Hub***: 4.46.0 (Optional)
 
-## Database
+### Database
 
-  This Spring Boot Application uses H2 as an In-Memory relational Database for testing purposes since is a lightweight database and requires low configuration.
+This Spring Boot Application uses H2 as an In-Memory relational Database for testing purposes since is a lightweight database and requires low configuration.
 
-  After starting the application you can go on http://localhost:8080/h2 where you can find a UI to check the databae. To log in set these parameters and click on "Connect":
+After starting the application you can go on http://localhost:8080/h2 where you can find a UI to check the databae. To log in set these parameters and click on "Connect":
 
 * ***Driver Class***: org.h2.Driver
 * ***JDBC URL***: jdbc:h2:mem:highrollerdb
@@ -33,7 +34,7 @@ This application exposes a Rest API to provide some services to manage an online
 * Take into account that this database was configured to be volatile (it can be changed in the JDBC URL) and results in data loss after application restart. If you want you can change the initial data load by modifying the data.sql placed in the resources folder.
 * All input data will be handled and saved in capital letters in the database. Therefore, the player's name is not case sensitive.</span>
 
-## Starting the application locally at the root folder of the project
+### Starting the application locally with Maven (project root dir)
 
 > ### Build
 >```bash
@@ -47,13 +48,38 @@ This application exposes a Rest API to provide some services to manage an online
 > This will run the application locally on port 8080
 <br>
 
-## Testing the Application
+### Starting the application locally with Docker
+
+> ### Build
+>```bash
+>docker build -t high-roller:1.0.0
+>```
+> ### Run
+>```bash
+>docker run --name high-roller -dp 8081:8080 high-roller:1.0.0
+>```
+> This will run the application locally on port 8081
+
+### Starting the application locally with Docker Compose
+
+> ### Build
+>```bash
+>docker compose build
+>```
+
+> ### Build and Run
+>```bash
+>docker compose up --detach
+>```
+> This will run the application locally on port 8081
+
+### Testing the Application
 
 In this application was included OpenAPI 3 for documentation and testing purposes (Swagger UI). <br>
-Once the application is running you can go on http://localhost:8080/swagger-ui/index.html to start testring the operations.
+Once the application is running you can go on http://localhost:8080/swagger-ui/index.html to start testing the operations.
 <br>
 
-### REST API endpoints:
+#### REST API endpoints:
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{id} </span>
   </br>Operation to get the player's info by his ID, regardless of whether the player left the network or not.

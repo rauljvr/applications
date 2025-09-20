@@ -1,15 +1,16 @@
-# Spring Boot Application (Reactive Version)
+# Spring Boot Application (Reactive)
 
 This application exposes a Rest API to provide some services to manage an online casino and its network of players.
 <br>
 
-## Septup
+### Septup
 
 * ***Spring Boot***: 3.5.3 with Spring WebFlux
 * ***JRE***: 17.0.12
 * ***Maven***: 3.9.5
+* ***Docker/Docker Hub***: 4.46.0 (Optional)
 
-## Database
+### Database
 
 This Spring Boot Application uses H2 as an In-Memory relational Database for testing purposes since is a lightweight database and requires low configuration.
 
@@ -33,7 +34,7 @@ After starting the application you can go on http://localhost:8080/h2 where you 
 * Take into account that this database was configured to be volatile (it can be changed in the JDBC URL) and results in data loss after application restart. If you want you can change the initial data load by modifying the data.sql placed in the resources folder.
 * All input data will be handled and saved in capital letters in the database. Therefore, the player's name is not case sensitive.</span>
 
-## Starting the application locally at the root folder of the project
+### Starting the application locally with Maven (project root dir)
 
 > ### Build
 >```bash
@@ -44,60 +45,85 @@ After starting the application you can go on http://localhost:8080/h2 where you 
 >```bash
 >./mvnw spring-boot:run
 >```
-> This will run the application locally on port 8080
+> This will run the application locally on port 8081
+
+### Starting the application locally with Docker
+
+> ### Build
+>```bash
+>docker build -t high-roller-reactive:1.0.0
+>```
+> ### Run
+>```bash
+>docker run --name high-roller-reactive -dp 8082:8080 high-roller-reactive:1.0.0
+>```
+> This will run the application locally on port 8082
+
+### Starting the application locally with Docker Compose
+
+> ### Build
+>```bash
+>docker compose build
+>```
+
+> ### Build and Run
+>```bash
+>docker compose up --detach
+>```
+> This will run the application locally on port 8082
 <br>
 
-## Testing the Application
+### Testing the Application
 
 In this application was included OpenAPI 3 for documentation and testing purposes (Swagger UI). <br>
-Once the application is running you can go on http://localhost:8080/swagger-ui/index.html to start testring the operations.
+Once the application is running you can go on http://localhost:8081/swagger-ui/index.html to start testing the operations.
 <br>
 
-### REST API endpoints:
+#### REST API endpoints:
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{id} </span>
   </br>Operation to get the player's info by his ID, regardless of whether the player left the network or not.
 ```text
-curl -X GET "http://localhost:8080/highrollernetwork/player/1"
+curl -X GET "http://localhost:8081/highrollernetworkreactive/player/1"
 ```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
   <br>Operation to get the player's info by his name (Request parameter), regardless of whether the player left the network or not.
   You can also check the referral chain of the player.
 ```text
-curl -X GET "http://localhost:8080/highrollernetwork/player?name=player%20d"
+curl -X GET "http://localhost:8081/highrollernetworkreactive/player?name=player%20d"
 ```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/referrer </span>
   <br>Operation to get who originally brought whom to the casino. The player has to be part of the network.
 ```text
-curl -X GET "http://localhost:8080/highrollernetwork/player/player%20d/referrer"
+curl -X GET "http://localhost:8081/highrollernetworkreactive/player/player%20d/referrer"
 ```
 
 * ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/downline </span>
   <br>Operation to see the entire network downline of a player. The player has to be part of the network.
 ```text
-curl -X GET "http://localhost:8080/highrollernetwork/player/casino/downline"
+curl -X GET "http://localhost:8081/highrollernetworkreactive/player/casino/downline"
 ```
 
 * ***POST***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
   <br>Operation to add new players under their referrers.
 ```text
-curl -X POST --header "Content-Type: application/json" --data '{"name": "player P", "parentName": "Player B"}' "http://localhost:8080/highrollernetwork/player"
+curl -X POST --header "Content-Type: application/json" --data '{"name": "player P", "parentName": "Player B"}' "http://localhost:8081/highrollernetworkreactive/player"
 ```
 
 * ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/exit </span>
   <br>Operation for players to leave the network. If a player leaves the network, the exit flag sets true and all players in his downline get his parent player.
 ```text
-curl -X PUT "http://localhost:8080/highrollernetwork/player/player%20E/exit"
+curl -X PUT "http://localhost:8081/highrollernetworkreactive/player/player%20E/exit"
 ```
 
 * ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/transfer </span>
   <br>Operation to transfer players between different VIP hosts. <br>
   The player's parent will be updated and the new parent is added to the tracking history.
 ```text
-curl -X PUT --header "Content-Type: application/json" --data '{"name": "player b"}' "http://localhost:8080/highrollernetwork/player/player%20M/transfer"
+curl -X PUT --header "Content-Type: application/json" --data '{"name": "player b"}' "http://localhost:8081/highrollernetworkreactive/player/player%20M/transfer"
 ```
-### Postman collection
+#### Postman collection
 
 In addition to this, in the resources folder of the project you can find the Postman collection (v2.1) to test all operations.

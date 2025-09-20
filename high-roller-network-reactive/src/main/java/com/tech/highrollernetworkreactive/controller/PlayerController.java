@@ -28,7 +28,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(path = "/highrollernetworkreactive")
-@Tag(name = "High Roller's Network Management", description = "This Rest API provides the services to manage the online casino and its network of players.")
+@Tag(name = "High Roller's Network Reactive Management", description = "This Rest API provides the services to manage the online casino and its network of players.")
 public class PlayerController {
 
     private IPlayerService playerService;

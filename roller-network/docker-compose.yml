@@ -1,0 +1,10 @@
+services:
+  high-roller:
+    image: high-roller:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    expose:
+      - "8080"
