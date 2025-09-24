@@ -1,0 +1,13 @@
+.margin-leff {
+  margin-left: 20px;
+}
+
+.margins {
+  margin-left: 20px;
+  margin-top: 6px !important;
+  width: max-content;
+}
+
+.margin-leff-col {
+  margin-left: 10px;
+}

@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-1 mb-3 mt-3">
+        <label for="Name" class="form-label margins">Player name:</label>
+    </div>
+    <div class="col-2 mb-3 mt-3 margin-leff">
+        <input type="text" class="form-control" placeholder="Enter name" [(ngModel)]="playerName" (keyup.enter)="getPlayerReferral()"/>
+    </div>
+</div>
+<button class="btn btn-success margin-leff" (click)="getPlayerReferral()">Get Referral Player</button>
+
+<br/><br/>
+
+<div class="row">
+    <div class="col-4">
+        <div [hidden]="isOkHidden" class="alert alert-success margin-leff" role="alert">
+            Successful response!
+        </div>
+        <div [hidden]="isKoHidden" class="alert alert-danger margin-leff" role="alert">
+            {{errorMessage}}
+        </div>
+    </div>
+</div>
+
+<div [hidden]="isOkHidden">
+    <div class="row margin-leff-col">
+        <div class="col-2 fw-bold">Player ID: </div>
+        <div class="col-1 fw-normal">{{player.id}}</div>
+    </div>
+    <div class="row margin-leff-col">
+        <div class="col-2 fw-bold">Player Name: </div>
+        <div class="col-1 fw-normal">{{player.name}}</div>
+    </div>
+    <div class="row margin-leff-col">
+        <div class="col-2 fw-bold">Parent ID: </div>
+        <div class="col-1 fw-normal">{{player.parentId}}</div>
+    </div>
+    <div class="row margin-leff-col">
+        <div class="col-2 fw-bold">Referral chain: </div>
+        <div class="col-1 fw-normal">{{player.referralChain}}</div>
+    </div>
+    <div class="row margin-leff-col">
+        <div class="col-2 fw-bold"> Active: </div>
+        @if (player.exit == false) {
+            <div class="col-1 fw-normal">true</div>
+        } @else {
+            <div class="col-1 fw-normal">false</div>
+        }
+    </div>
+</div>

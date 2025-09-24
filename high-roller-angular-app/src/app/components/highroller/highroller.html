@@ -1,0 +1,42 @@
+<h2 class="text-center fst-italic">High Roller Network App</h2>
+<img src="tree.png" class="img-fluid mx-auto d-block">
+
+<div class="row">
+    <div class="col-12">
+        <div class="bd-example margin-leff">
+            <button type="button" [ngClass]="currentComponent == 'playerId' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('playerId')">Player By ID</button>
+            <button type="button" [ngClass]="currentComponent == 'playerName' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('playerName')">Player By Name</button>
+            <button type="button" [ngClass]="currentComponent == 'referral' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('referral')">Referral Player</button>
+            <button type="button" [ngClass]="currentComponent == 'downline' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('downline')">Player Downline</button>
+            <button type="button" [ngClass]="currentComponent == 'playerNew' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('playerNew')">New Player</button>
+            <button type="button" [ngClass]="currentComponent == 'playerTransfer' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('playerTransfer')">Transfer Player</button>
+            <button type="button" [ngClass]="currentComponent == 'playerExit' ? 'btn btn-primary' : 'btn btn-light'" (click)="swapTab('playerExit')">Transfer Exit</button>
+        </div>
+    </div>
+</div>
+
+ <div class="row">
+    <div class="col-12">
+        @if (currentComponent == 'playerId') {
+            <app-player-id></app-player-id>
+        }
+        @if (currentComponent == 'playerName') {
+            <app-player-name></app-player-name>
+        }
+        @if (currentComponent == 'referral') {
+            <app-referral></app-referral>
+        }
+        @if (currentComponent == 'downline') {
+            <app-player-downline></app-player-downline>
+        }
+        @if (currentComponent == 'playerNew') {
+            <app-player-new></app-player-new>
+        }
+        @if (currentComponent == 'playerTransfer') {
+            <app-player-transfer></app-player-transfer>
+        }
+        @if (currentComponent == 'playerExit') {
+            <app-player-exit></app-player-exit>
+        }
+    </div>
+ </div>
