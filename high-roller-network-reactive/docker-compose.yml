@@ -1,6 +1,6 @@
 services:
   high-roller-reactive:
-    image: high-roller-reactive:1.0
+    image: high-roller-reactive:1.0.0
     build:
       context: .
       dockerfile: Dockerfile
