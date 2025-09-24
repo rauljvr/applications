@@ -1,4 +1,4 @@
-# High Roller Angular App
+# High Roller Network Angular App
 
 This is a Web application that contains the necessary components to interact with the Rest API of the High Roller Spring Boot application. 
 
