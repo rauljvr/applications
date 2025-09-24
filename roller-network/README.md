@@ -130,4 +130,4 @@ In addition to this, in the resources folder of the project you can find the Pos
 
 ### Angular Web application
 
-An Angular application was built to test the Rest API. Refer to the project [high-roller-angular-app](https://github.com/angular/angular-cli) to start the project.
+An Angular application was built to test the Rest API. Refer to the project [high-roller-angular-app](https://github.com/rauljvr/applications/tree/main/high-roller-angular-app) to start the project.
