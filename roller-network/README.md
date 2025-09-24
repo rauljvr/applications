@@ -127,3 +127,7 @@ curl -X PUT --header "Content-Type: application/json" --data '{"name": "player b
 ### Postman collection
 
 In addition to this, in the resources folder of the project you can find the Postman collection (v2.1) to test all operations.
+
+### Angular Web application
+
+An Angular application was built to test the Rest API. Refer to the project [high-roller-angular-app](https://github.com/angular/angular-cli) to start the project.
