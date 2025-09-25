@@ -52,7 +52,7 @@ After starting the application you can go on http://localhost:8080/h2 where you 
 
 > ### Build
 >```bash
->docker build -t high-roller:1.0.0
+>docker build -t high-roller:1.0.0 .
 >```
 > ### Run
 >```bash
