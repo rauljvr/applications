@@ -2,7 +2,7 @@
 
 ## The network
 
-The application consists of building a system to create the hierarchical relationships of the high roller's network in a casino.
+The application consists of building a system to create the hierarchical relationships of the high roller's network of the casino.
 
 ## The structure of the network
 
@@ -38,12 +38,12 @@ Design the API service that can manage the entire player's network.
 The requirements are:
 
 1. Welcome new players to the network
-    * Add new players under their referrers.
+    * Add new players under their referral player.
     * Track who brought whom to the casino.
     * Maintain the referral chain integrity.
 2. Player leave the network
     * Handle what happens if a player leaves the network.
-3. Reassignment of the referrer
+3. Reassignment of the referral player
     * Transfer players among them.
     * Update referral chains without losing history.
 4. Network Tracking
