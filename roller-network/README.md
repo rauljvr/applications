@@ -8,7 +8,7 @@ This application exposes a Rest API to provide some services to manage an online
 * ***Spring Boot***: 3.5.3
 * ***JRE***: 17.0.12
 * ***Maven***: 3.9.5
-* ***Docker/Docker Hub***: 4.46.0 (Optional)
+* ***Docker/Docker Desktop***: 4.46.0 (Optional)
 
 ### Database
 

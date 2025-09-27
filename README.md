@@ -51,7 +51,7 @@ The requirements are:
 
 ## Examples of tracking on the network
 
-1. Get all players, must return in this order:
+1. Get the downline of the casino (all players), must return in this order:
 
     ```text
     [ Casino, Player A, Player D, Player E, Player F, Player G, Player B, Player C, Player H, Player I, Player M, Player J, Player K, Player N ]

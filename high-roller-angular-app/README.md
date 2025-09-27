@@ -1,6 +1,6 @@
 # High Roller Network Angular App
 
-This is a Web application that contains the necessary components to interact with the Rest API of the High Roller Spring Boot application. 
+This is a Web application that contains the necessary components to interact with the Rest API of the [High Roller Network Spring Boot application](https://github.com/rauljvr/applications/tree/main/roller-network). 
 
 ## Septup
 
@@ -25,4 +25,4 @@ To start a local development server, run:
 ng serve
 ```
 
-Once the server is running, open the browser and navigate to `http://localhost:4200/`.
+Once the server is running, open the browser and navigate to http://localhost:4200/
