@@ -81,44 +81,44 @@ Once the application is running you can go on http://localhost:8081/swagger-ui/i
 
 #### REST API endpoints:
 
-* ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{id} </span>
+* ***GET***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player/{id} </span>
   </br>Operation to get the player's info by his ID, regardless of whether the player left the network or not.
 ```text
 curl -X GET "http://localhost:8081/highrollernetworkreactive/player/1"
 ```
 
-* ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
+* ***GET***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player </span>
   <br>Operation to get the player's info by his name (Request parameter), regardless of whether the player left the network or not.
   You can also check the referral chain of the player.
 ```text
 curl -X GET "http://localhost:8081/highrollernetworkreactive/player?name=player%20d"
 ```
 
-* ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/referrer </span>
+* ***GET***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player/{name}/referrer </span>
   <br>Operation to get who originally brought whom to the casino. The player has to be part of the network.
 ```text
 curl -X GET "http://localhost:8081/highrollernetworkreactive/player/player%20d/referrer"
 ```
 
-* ***GET***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/downline </span>
+* ***GET***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player/{name}/downline </span>
   <br>Operation to see the entire network downline of a player. The player has to be part of the network.
 ```text
 curl -X GET "http://localhost:8081/highrollernetworkreactive/player/casino/downline"
 ```
 
-* ***POST***: <span style="color:gray">http://localhost:8080/highrollernetwork/player </span>
+* ***POST***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player </span>
   <br>Operation to add new players under their referrers.
 ```text
 curl -X POST --header "Content-Type: application/json" --data '{"name": "player P", "parentName": "Player B"}' "http://localhost:8081/highrollernetworkreactive/player"
 ```
 
-* ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/exit </span>
+* ***PUT***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player/{name}/exit </span>
   <br>Operation for players to leave the network. If a player leaves the network, the exit flag sets true and all players in his downline get his parent player.
 ```text
 curl -X PUT "http://localhost:8081/highrollernetworkreactive/player/player%20E/exit"
 ```
 
-* ***PUT***: <span style="color:gray">http://localhost:8080/highrollernetwork/player/{name}/transfer </span>
+* ***PUT***: <span style="color:gray">http://localhost:8081/highrollernetworkreactive/player/{name}/transfer </span>
   <br>Operation to transfer players between different VIP hosts. <br>
   The player's parent will be updated and the new parent is added to the tracking history.
 ```text
