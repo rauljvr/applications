@@ -26,3 +26,28 @@ ng serve
 ```
 
 Once the server is running, open the browser and navigate to http://localhost:4200/
+
+### Starting the application locally with Docker
+
+> ### Build
+>```bash
+>docker build -t high-roller-angular:1.0.0 .
+>```
+> ### Run
+>```bash
+>docker run --name high-roller-angular -dp 4200:80 high-roller-angular:1.0.0
+>```
+> This will run the application locally on port 4200. Then open the browser and navigate to http://localhost:4200/
+
+### Starting the application locally with Docker Compose
+
+> ### Build
+>```bash
+>docker compose build
+>```
+
+> ### Build and Run
+>```bash
+>docker compose up --detach
+>```
+> This will run the application locally on port 4200. Then open the browser and navigate to http://localhost:4200/
